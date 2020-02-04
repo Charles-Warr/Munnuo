@@ -19,6 +19,14 @@ public class GroundStatus : MonoBehaviour
         }
     }
 
+    void OnTriggerStay(Collider other)
+    {
+        if(other.tag == "Ground")
+        {
+            ground = true;
+        }
+    }
+
     void OnTriggerExit(Collider other)
     {
         if (other.tag == "Ground")

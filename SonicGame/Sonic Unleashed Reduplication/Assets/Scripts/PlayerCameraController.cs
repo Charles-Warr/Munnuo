@@ -17,9 +17,14 @@ public class PlayerCameraController : MonoBehaviour
     [SerializeField] float smoothingSpeed;
 
     [SerializeField] float cameraSensitivity = 1f;
+    [SerializeField] bool invertY;
+
+    private float invertModifier;
 
     private float Yrotation;
     private float XZrotation;
+
+
 
     private bool reachMaximumDist;
     private bool reachMinimumDist;
@@ -45,6 +50,13 @@ public class PlayerCameraController : MonoBehaviour
     {
         Yrotation = Input.GetAxis("CameraY");
         XZrotation = Input.GetAxis("CameraXZ");
+
+        if (invertY)
+        {
+            invertModifier = 1f;
+        }
+        else
+            invertModifier = -1f;
 
         float oldX = oldPosition.x;
         float oldY = oldPosition.y;
@@ -121,14 +133,16 @@ public class PlayerCameraController : MonoBehaviour
 
     private void cameraMove()
     {
-        transform.position += newPosition;
 
-        transform.RotateAround(player.transform.position, Vector3.up, cameraSensitivity * Yrotation * Time.deltaTime);
+            transform.position += newPosition;
 
-        startPoint.LookAt(player.GetComponent<Transform>());
+            transform.RotateAround(player.transform.position, Vector3.up, cameraSensitivity * Yrotation * Time.deltaTime);
 
-        transform.RotateAround(player.transform.position, transform.forward + transform.right, cameraSensitivity * XZrotation * Time.deltaTime);
+            startPoint.LookAt(player.GetComponent<Transform>());
 
-        startPoint.LookAt(player.GetComponent<Transform>());
+            transform.RotateAround(player.transform.position, transform.forward + transform.right, cameraSensitivity * invertModifier * XZrotation * Time.deltaTime);
+
+            startPoint.LookAt(player.GetComponent<Transform>());
+      
     }
 }
